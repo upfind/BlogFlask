@@ -6,3 +6,6 @@
     (3)将迁移文件映射到数据库中 python manage.py db upgrade
         映射之后数据库中将多出一些表
 
+2:升级数据库 当定义的models结构发生改变，也就是数据库中表结构需要发生改变时
+    (1)manage.py db migrate 先更新一下迁移文件
+    (2)python manage.py db upgrade 然后执行更新过后的迁移文件的升级

@@ -2,7 +2,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import config
 from exts import db
-from models import User
+from decorators import login_required
+from models import User, Question
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -11,7 +12,10 @@ db.init_app(app)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    context = {
+        'questions': Question.query.order_by('-create_time').all()
+    }
+    return render_template('index.html', **context)
 
 
 @app.route('/login/', methods=['GET', 'POST'])
@@ -29,6 +33,29 @@ def login():
             return redirect(url_for('index'))
         else:
             return u'手机号码或者密码错误！请确认后再操作'
+
+
+@app.route('/logout/')
+def logout():
+    session.clear
+    return redirect(url_for('login'))
+
+
+@app.route('/question/', methods=['GET', 'POST'])
+@login_required
+def question():
+    if request.method == 'GET':
+        return render_template('question.html')
+    else:
+        title = request.form.get('title')
+        content = request.form.get('content')
+        question = Question(title=title, content=content)
+        user_id = session.get('user_id')
+        user = User.query.filter(User.id == user_id).first()
+        question.author = user
+        db.session.add(question)
+        db.session.commit()
+        return redirect(url_for('index'))
 
 
 @app.route('/register/', methods=['GET', 'POST'])

@@ -1,1 +1,39 @@
 
+ul.question-list-group {
+    list-style: none;
+}
+
+ul.question-list-group li {
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+    padding: 15px 0;
+}
+
+.avatar-group {
+    width: 38px;
+    float: left;
+}
+
+.avatar-group .avatar {
+    width: 38px;
+    height: 38px;
+}
+
+.question-group {
+    float: left;
+    width: 600px;
+    margin-left: 10px;
+}
+
+.question-title a {
+    color: #225599;
+    font-weight: 700;
+}
+
+.question-info {
+    text-align: right;
+}
+
+.question-info .question-author {
+    margin-right: 20px;
+}
