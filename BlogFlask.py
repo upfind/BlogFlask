@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import config
 from exts import db
 from decorators import login_required
-from models import User, Question
+from models import User, Question, Answer
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -13,7 +13,7 @@ db.init_app(app)
 @app.route('/')
 def index():
     context = {
-        'questions': Question.query.order_by('-create_time').all()
+        'questions': Question.query.order_by('create_time').all()
     }
     return render_template('index.html', **context)
 
@@ -79,6 +79,28 @@ def register():
                 db.session.add(user)
                 db.session.commit()
                 return redirect(url_for('login'))
+
+
+@app.route('/detail/<question_id>')
+def detail(question_id):
+    mQuestion = Question.query.filter(Question.id == question_id).first()
+    return render_template('detail.html', question=mQuestion)
+
+
+@app.route('/add_answer/', methods=['POST'])
+@login_required
+def add_answer():
+    content = request.form.get('answer')
+    question_id = request.form.get('question_id')
+    answer = Answer(content=content)
+    user_id = session['user_id']
+    user = User.query.filter(User.id == user_id).first()
+    answer.author = user
+    question = Question.query.filter(Question.id == question_id).first()
+    answer.question = question
+    db.session.add(answer)
+    db.session.commit()
+    return redirect(url_for('detail', question_id=question_id))
 
 
 @app.route('/test/')
