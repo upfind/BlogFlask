@@ -32,10 +32,18 @@
         </div>
     </form>
 
-    <ul>
+    <ul class="answer-list">
         {% for answer in question.answers %}
 
-            <li>{{ answer.content }}</li>
+            <li>
+                <div class="user-info">
+                    <img src="{{ url_for('static',filename='images/user.png') }}" class="avatar" alt="">
+                    <span class="username">{{ answer.author.username }}</span>
+                    <span class="create-time">{{ answer.create_time or '暂无' }}</span>
+
+                </div>
+                <p class="answer-content">{{ answer.content }}</p>
+            </li>
         {% endfor %}
 
     </ul>
