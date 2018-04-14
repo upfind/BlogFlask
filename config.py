@@ -3,6 +3,8 @@ import os
 DEBUG = True
 
 SECRET_KEY = os.urandom(24)
+# about flask-wtf
+CSRF_ENABLED = True
 
 # 项目绝对路径
 baseDir = os.path.abspath(os.path.dirname(__file__))
