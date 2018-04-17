@@ -1,17 +1,14 @@
 # encoding: utf-8
 from flask import Flask, render_template, request, redirect, url_for, session
+
 import config
-from exts import db, lm, oid
 from decorators import login_required
+from exts import db
 from models import User, Question, Answer
-import os
-from config import baseDir
 
 app = Flask(__name__)
 app.config.from_object(config)
 db.init_app(app)
-lm.init_app(app)
-oid.init_app(app, os.path.join(baseDir, 'tmp'))
 
 
 
